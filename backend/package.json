@@ -1,0 +1,35 @@
+{
+  "name": "viaticos-backend",
+  "version": "1.0.0",
+  "description": "API REST para sistema de viáticos VH cuenta 33000",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "seed": "node src/db/seed.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "usuario": "node src/db/crear-usuario.js"
+  },
+  "dependencies": {
+    "@tesseract.js-data/spa": "^1.0.0",
+    "better-sqlite3": "^9.6.0",
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.1.1",
+    "pdfkit": "^0.19.1",
+    "sharp": "^0.35.3",
+    "tesseract.js": "^7.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=22.9"
+  }
+}

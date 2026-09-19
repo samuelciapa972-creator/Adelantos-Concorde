@@ -1,0 +1,91 @@
+@import '@fontsource-variable/source-sans-3/wght.css';
+@import '@fontsource-variable/source-serif-4/opsz.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+  }
+  h1, h2, h3 { @apply font-display; text-wrap: balance; font-optical-sizing: auto; letter-spacing: -0.012em; }
+  /* Cifras alineadas y de altura uniforme, como en una tabla de cuentas */
+  .font-display { font-variant-numeric: lining-nums tabular-nums; font-optical-sizing: auto; }
+  :focus-visible {
+    outline: 2px solid theme('colors.brand.500');
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  ::selection { background: theme('colors.brand.100'); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+}
+
+@layer components {
+  /* ── Botones ─────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg
+           transition-colors disabled:opacity-50 disabled:pointer-events-none select-none;
+  }
+  .btn-primary   { @apply btn bg-brand-500 text-white hover:bg-brand-600 active:bg-brand-700; }
+  .btn-secondary { @apply btn bg-surface-raised text-ink border border-line-strong hover:bg-surface-sunken; }
+  .btn-danger    { @apply btn bg-bad text-white hover:bg-[#8E1B12]; }
+  .btn-ghost     { @apply btn text-ink-soft hover:bg-surface-sunken hover:text-ink; }
+  .btn-sm        { @apply px-3 py-1.5 text-xs; }
+  .btn-lg { @apply px-5 py-3.5 text-base rounded-xl min-h-[52px]; }
+  .input-lg { @apply px-4 py-3 text-base min-h-[52px]; }
+  .btn-icon {
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-lg text-ink-mute transition-colors
+           hover:bg-surface-sunken hover:text-ink disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  /* ── Formularios ─────────────────────────── */
+  .label { @apply block text-xs font-medium text-ink-soft mb-1.5; }
+  .input, .select {
+    @apply w-full px-3 py-2 text-sm bg-surface-raised text-ink border border-line-strong rounded-lg
+           placeholder:text-ink-mute transition-shadow
+           focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500
+           disabled:bg-surface-sunken disabled:text-ink-mute;
+  }
+  .hint  { @apply text-xs text-ink-mute mt-1; }
+  .field-error { @apply text-xs text-bad mt-1; }
+
+  /* ── Superficies ─────────────────────────── */
+  .panel { @apply bg-surface-raised border border-line rounded-xl shadow-card; }
+  .panel-head { @apply px-5 py-4 border-b border-line flex items-center justify-between gap-3; }
+
+  /* ── Tablas ──────────────────────────────── */
+  .table-wrap { @apply overflow-x-auto; }
+  .tbl { @apply w-full text-sm; }
+  .tbl thead th {
+    @apply px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-ink-mute
+           bg-surface-sunken/70 border-b border-line whitespace-nowrap;
+  }
+  .tbl tbody td { @apply px-4 py-3 border-b border-line/70 whitespace-nowrap; }
+  .tbl tbody tr:last-child td { @apply border-b-0; }
+  .tbl tbody tr { @apply transition-colors hover:bg-surface/70; }
+  .tbl tfoot td { @apply px-4 py-3 font-semibold bg-surface-sunken/70 border-t border-line-strong whitespace-nowrap; }
+  .num { font-variant-numeric: tabular-nums; @apply text-right; }
+
+  /* ── Estados (icono + texto, nunca solo color) ── */
+  .chip { @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap; }
+  .chip-ok   { @apply chip bg-ok-soft text-ok; }
+  .chip-warn { @apply chip bg-warn-soft text-warn; }
+  .chip-bad  { @apply chip bg-bad-soft text-bad; }
+  .chip-mute { @apply chip bg-surface-sunken text-ink-soft; }
+
+  /* ── Carga ───────────────────────────────── */
+  .skeleton { @apply relative overflow-hidden bg-surface-sunken rounded-md; }
+  .skeleton::after {
+    content: ''; @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / .6), transparent);
+    animation: shimmer 1.3s infinite;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+}

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import TextoProtegido from './TextoProtegido'
 
 export default function PageHeader({ title, subtitle, actions, icon: Icon }) {
   useEffect(() => { document.title = `${title} · Viáticos VH` }, [title])
@@ -12,8 +13,8 @@ export default function PageHeader({ title, subtitle, actions, icon: Icon }) {
           </div>
         )}
         <div className="min-w-0">
-          <h1 className="text-[28px] sm:text-[32px] leading-[1.1] font-semibold text-ink">{title}</h1>
-          {subtitle && <p className="text-sm text-ink-mute mt-2">{subtitle}</p>}
+          <TextoProtegido as="h1" className="text-[28px] sm:text-[32px] leading-[1.1] font-semibold text-ink">{title}</TextoProtegido>
+          {subtitle && <TextoProtegido as="p" className="text-sm text-ink-mute mt-2">{subtitle}</TextoProtegido>}
         </div>
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

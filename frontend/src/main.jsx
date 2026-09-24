@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App.jsx'
+import { FiltroAntiOCR } from './components/ui/TextoProtegido'
 import './index.css'
 
 // Los errores de mutaciones sin mensaje propio (legalizar, eliminar…) se avisan con un toast.
@@ -21,6 +22,7 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <FiltroAntiOCR />
       <App />
     </QueryClientProvider>
   </React.StrictMode>

@@ -77,6 +77,26 @@
   .chip-bad  { @apply chip bg-bad-soft text-bad; }
   .chip-mute { @apply chip bg-surface-sunken text-ink-soft; }
 
+  /* ── Texto protegido (anti-scraping / anti-OCR) ── */
+  .protegido {
+    /* Contorno fantasma de medio píxel: el ojo lo funde, el OCR ve bordes dobles */
+    text-shadow:
+      0.4px 0 0 color-mix(in srgb, currentColor 30%, transparent),
+      -0.3px 0.3px 0 color-mix(in srgb, currentColor 18%, transparent);
+    /* Micro-líneas de interferencia detrás del texto */
+    background-image: repeating-linear-gradient(
+      -14deg,
+      transparent 0 3px,
+      color-mix(in srgb, currentColor 8%, transparent) 3px 3.6px
+    );
+    filter: url(#ruido-ocr);
+  }
+  .protegido-palabra { @apply relative inline-flex; }
+  .protegido-palabra > span { display: inline-block; }
+  @media (prefers-contrast: more), (forced-colors: active), print {
+    .protegido { text-shadow: none; background-image: none; filter: none; }
+  }
+
   /* ── Carga ───────────────────────────────── */
   .skeleton { @apply relative overflow-hidden bg-surface-sunken rounded-md; }
   .skeleton::after {
@@ -88,4 +108,66 @@
 
 @layer utilities {
   .text-balance { text-wrap: balance; }
+}
+
+/* ── Tipografía anti-IA ─────────────────────────────────────────
+   Va fuera de @layer y con !important en la fuente para imponerse a
+   las utilidades de Tailwind (font-sans, font-display, tracking-*). */
+@font-face {
+  font-family: 'AntiAIFont';
+  src: url('./assets/AntiAIFont.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* AntiAIFont manda; si no está disponible se usan las familias originales del diseño:
+   sans para la interfaz y serifa para títulos y cifras. Los demás elementos heredan
+   (Tailwind ya pone font-family: inherit en botones y campos). */
+body {
+  font-family: 'AntiAIFont', 'Source Sans 3 Variable', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6, .font-display,
+:is(h1, h2, h3, h4, h5, h6, .font-display) * {
+  font-family: 'AntiAIFont', 'Source Serif 4 Variable', Georgia, Cambria, serif !important;
+}
+
+/* Tracking alterado: rompe el espaciado regular que usa el OCR para segmentar letras.
+   Moderado para no afectar la lectura. */
+body {
+  letter-spacing: 0.015em;
+  word-spacing: 0.06em;
+}
+h1, h2, h3, h4, h5, h6 { letter-spacing: 0.005em !important; }
+
+/* Donde el ancho es crítico (tablas, chips, botones, campos) se respeta el tracking
+   original para que nada se desborde ni se parta en móvil. */
+.tbl td, .chip, .btn, input, textarea, select, option, pre, code {
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+.tbl th { word-spacing: normal; }
+
+/* Sombras sutiles repetidas: bordes duplicados que el ojo funde y el OCR no */
+h1, h2, h3, h4, h5, h6, p, span, a, li, label, td, th {
+  text-shadow:
+    0.4px 0 0 color-mix(in srgb, currentColor 20%, transparent),
+    -0.4px 0 0 color-mix(in srgb, currentColor 12%, transparent),
+    0 0.4px 0 color-mix(in srgb, currentColor 8%, transparent),
+    0.8px -0.4px 0 color-mix(in srgb, currentColor 5%, transparent);
+}
+
+/* Micro-líneas tipográficas: una máscara con renglones finos atraviesa los trazos de
+   las letras (solo lo pintado, nunca la caja), sin posicionar nada ni dibujar bloques
+   de fondo. A simple vista se percibe como la textura de una impresión fina. */
+h1, h2, h3, h4, h5, h6, p {
+  -webkit-mask-image: repeating-linear-gradient(0deg, #000 0 0.3em, rgb(0 0 0 / .78) 0.3em calc(0.3em + 0.6px));
+          mask-image: repeating-linear-gradient(0deg, #000 0 0.3em, rgb(0 0 0 / .78) 0.3em calc(0.3em + 0.6px));
+}
+[role='alert'] { -webkit-mask-image: none; mask-image: none; }
+
+/* Quien necesita alto contraste, colores forzados o imprimir recibe el texto limpio */
+@media (prefers-contrast: more), (forced-colors: active), print {
+  * { text-shadow: none !important; }
+  h1, h2, h3, h4, h5, h6, p { -webkit-mask-image: none; mask-image: none; }
 }

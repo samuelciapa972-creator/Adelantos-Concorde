@@ -1,0 +1,5 @@
+{
+  // Dos entornos: el código de la app (navegador) y los archivos de configuración (Node).
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+}

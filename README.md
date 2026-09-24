@@ -7,31 +7,39 @@ con reportes mensuales en Excel y PDF.
 
 ```
 ├── package.json             comandos del proyecto (dev, start, setup…)
-├── scripts/dev.mjs          lanzador de `npm run dev`
-├── backend/                 API REST (Node.js + Express + SQLite)
+├── scripts/dev.ts           lanzador de `npm run dev`
+├── backend/                 API REST (TypeScript + Node.js + Express + SQLite)
 │   ├── src/
 │   │   ├── db/
-│   │   │   ├── database.js  conexión + ejecutor de migraciones
+│   │   │   ├── database.ts  conexión + ejecutor de migraciones
 │   │   │   ├── migrations/  001_init.sql, 002_...  (una por cambio de esquema)
-│   │   │   ├── crear-usuario.js  (npm run usuario)
-│   │   │   ├── saldos.js    ÚNICA fuente del cálculo de saldos
-│   │   │   ├── guards.js    reglas: mes cerrado no admite cambios
-│   │   │   └── seed.js
+│   │   │   ├── crear-usuario.ts  (npm run usuario)
+│   │   │   ├── saldos.ts    ÚNICA fuente del cálculo de saldos
+│   │   │   ├── guards.ts    reglas: mes cerrado no admite cambios
+│   │   │   └── seed.ts
 │   │   ├── routes/          formularios, gastos, vehiculos, conductores,
 │   │   │                    meses, cuentas, uploads, reportes
 │   │   ├── middleware/      errorHandler, security (CSRF, límites), upload
 │   │   ├── utils/           auth (sesiones), auditoria, config, ocr + ocrParser, archivos
-│   │   └── index.js
+│   │   ├── types/           tipos del dominio (filas de la base) y de Express
+│   │   └── index.ts
 │   ├── test/                pruebas (node:test)
 │   └── .env.example
-└── frontend/                React + Vite + Tailwind + React Query
+└── frontend/                React + TypeScript + Vite + Tailwind + React Query
     ├── src/ api/ components/ context/ pages/ utils/
+    ├── src/types.ts         modelos que devuelve la API
     ├── src/movil/           app de conductores (PWA)
     └── public/              manifest, service worker e iconos
 ```
 
 ## Requisitos
-Node.js 22.9+ y npm 10+.
+Node.js 22.18+ y npm 10+.
+
+Todo el proyecto está en **TypeScript** (modo `strict`). El backend no se compila:
+Node ejecuta los `.ts` directamente (quita los tipos al cargarlos) y `tsc` solo verifica
+los tipos. El frontend lo compila Vite. Por eso el backend usa únicamente sintaxis de
+TypeScript que se puede borrar sin transformar (`erasableSyntaxOnly`: nada de `enum`
+ni `namespace`).
 
 ## Arranque rápido (un solo comando)
 
@@ -50,6 +58,7 @@ npm run dev                            # arranca API + frontend juntos → http:
 | `npm run usuario -- <usuario> "<Nombre>"` | Crea un usuario o cambia su contraseña. |
 | `npm run seed` | Carga datos de ejemplo. |
 | `npm test` | Pruebas del backend. |
+| `npm run typecheck` | Verifica los tipos de backend y frontend (`npm run build` también lo hace). |
 
 Si un puerto está ocupado, `npm run dev` lo avisa; puedes usar otros con
 `WEB_PORT=5180 API_PORT=3010 npm run dev`.

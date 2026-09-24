@@ -83,18 +83,12 @@
     text-shadow:
       0.4px 0 0 color-mix(in srgb, currentColor 30%, transparent),
       -0.3px 0.3px 0 color-mix(in srgb, currentColor 18%, transparent);
-    /* Micro-líneas de interferencia detrás del texto */
-    background-image: repeating-linear-gradient(
-      -14deg,
-      transparent 0 3px,
-      color-mix(in srgb, currentColor 8%, transparent) 3px 3.6px
-    );
     filter: url(#ruido-ocr);
   }
   .protegido-palabra { @apply relative inline-flex; }
   .protegido-palabra > span { display: inline-block; }
   @media (prefers-contrast: more), (forced-colors: active), print {
-    .protegido { text-shadow: none; background-image: none; filter: none; }
+    .protegido { text-shadow: none; filter: none; }
   }
 
   /* ── Carga ───────────────────────────────── */
